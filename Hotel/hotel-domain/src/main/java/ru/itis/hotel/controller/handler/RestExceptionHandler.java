@@ -7,6 +7,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import ru.itis.hotel.exception.RusappServiceException;
 import ru.itis.hotel.validation.dto.ValidationErrorDto;
 import ru.itis.hotel.validation.dto.ValidationExceptionResponse;
 
@@ -40,4 +41,15 @@ public class RestExceptionHandler {
                 .build());
 
     }
+
+    @ExceptionHandler(RusappServiceException.class)
+    public final ResponseEntity<ExceptionResponse> onAccountExceptionExceptions(RusappServiceException rusappServiceException) {
+
+        return ResponseEntity.status(rusappServiceException.getHttpStatus())
+                .body(ExceptionResponse.builder()
+                        .message(rusappServiceException.getMessage())
+                        .exceptionName(rusappServiceException.getClass().getSimpleName())
+                        .build());
+    }
+
 }
