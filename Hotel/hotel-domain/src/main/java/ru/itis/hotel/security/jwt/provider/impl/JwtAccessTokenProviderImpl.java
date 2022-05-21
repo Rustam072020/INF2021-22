@@ -2,7 +2,7 @@ package ru.itis.hotel.security.jwt.provider.impl;
 
 import io.jsonwebtoken.Claims;
 import ru.itis.hotel.dto.response.UserResponse;
-import ru.itis.hotel.exception.AuthenticationHeaderException;
+import ru.itis.hotel.exception.user.AuthenticationHeaderException;
 import ru.itis.hotel.security.jwt.provider.JwtAccessTokenProvider;
 
 import java.util.Date;
@@ -35,7 +35,6 @@ public class JwtAccessTokenProviderImpl implements JwtAccessTokenProvider {
 
     @Override
     public String generateAccessToken(String subject, Map<String, Object> data) {
-
         Map<String, Object> claims = new HashMap<>(data);
         claims.put(Claims.SUBJECT, subject);
         return Jwts.builder()
@@ -51,8 +50,6 @@ public class JwtAccessTokenProviderImpl implements JwtAccessTokenProvider {
             Claims claims = parseAccessToken(accessToken);
             String subjectFromToken = claims.getSubject();
             Date date = claims.getExpiration();
-            System.out.println(date);
-            System.out.println(new Date());
             return subject.equals(subjectFromToken) && date.after(new Date());
         } catch (ExpiredJwtException e) {
             throw new AuthenticationHeaderException("Token expired date error");

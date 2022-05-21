@@ -10,12 +10,14 @@ import ru.itis.hotel.dto.response.UserResponse;
 import ru.itis.hotel.enums.EmailStatus;
 import ru.itis.hotel.enums.Role;
 import ru.itis.hotel.enums.UserState;
+import ru.itis.hotel.exception.user.UserNotFoundException;
 import ru.itis.hotel.mapper.UserMapper;
 import ru.itis.hotel.model.UserEntity;
 import ru.itis.hotel.repository.UserRepository;
 import ru.itis.hotel.service.UserService;
 import ru.itis.hotel.util.EmailUtil;
 
+import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
@@ -50,19 +52,11 @@ public class UserServiceImpl implements UserService {
     public UUID signUp(CreateUserRequest user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         UserEntity newUser = userMapper.toUserEntity(user);
-        newUser.setRole(Role.USER);
+        newUser.setRole(user.getRole());
         newUser.setState(UserState.ACTIVE);
         newUser.setEmailStatus(EmailStatus.NOT_CONFIRMED);
         UUID id = userRepository.save(newUser).getUuid();
-        Runnable task = () -> {
-            HashMap<String, String> data = new HashMap<>();
-            data.put("confirm_code", id.toString());
-            data.put("name", newUser.getFullName());
-            emailUtil.sendMail(newUser.getEmail(), "confirm", emailTemplaName,
-                    data);
-        };
-        Thread thread = new Thread(task);
-        //thread.start();
+        toSendConfirmLetterEmail(newUser);
         return id;
     }
 
@@ -72,5 +66,32 @@ public class UserServiceImpl implements UserService {
                 userRepository.findById(userId)
                         .orElseThrow()
         );
+    }
+
+    @Transactional
+    @Override
+    public void confirmEmail(UUID userId){
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+        user.setEmailStatus(EmailStatus.CONFIRMED);
+    }
+
+    //TODO Подумать как сделать обновление юзера
+    @Transactional
+    @Override
+    public UserResponse updateUser(CreateUserRequest updateUser) {
+        return null;
+    }
+
+    private void toSendConfirmLetterEmail(UserEntity newUser) {
+        Runnable task = () -> {
+            HashMap<String, String> data = new HashMap<>();
+            data.put("confirm_code", newUser.getUuid().toString());
+            data.put("name", newUser.getFullName());
+            emailUtil.sendMail(newUser.getEmail(), "confirm", emailTemplaName,
+                    data);
+        };
+        Thread thread = new Thread(task);
+        thread.start();
     }
 }

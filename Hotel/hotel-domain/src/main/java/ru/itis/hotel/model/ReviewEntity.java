@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 
 @Data
@@ -16,7 +17,7 @@ import javax.persistence.*;
 @SuperBuilder
 @Entity
 @Table(name = "review",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"apartment_id","user_id"}))
+        uniqueConstraints = @UniqueConstraint(columnNames = {"apartment_id","client_id"}))
 public class ReviewEntity extends AbstractEntity {
 
     @Column(nullable = false)
@@ -30,9 +31,8 @@ public class ReviewEntity extends AbstractEntity {
     @JoinColumn(name = "apartment_id")
     private ApartmentEntity apartments;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private UserEntity users;
+    @Column(name = "client_id")
+    private UUID client;
 
 
 }

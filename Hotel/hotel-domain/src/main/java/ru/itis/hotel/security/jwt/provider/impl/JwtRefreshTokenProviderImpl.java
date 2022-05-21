@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.itis.hotel.dto.response.UserResponse;
-import ru.itis.hotel.exception.TokenRefreshException;
-import ru.itis.hotel.exception.UserNotFoundException;
+import ru.itis.hotel.exception.user.TokenRefreshException;
+import ru.itis.hotel.exception.user.UserNotFoundException;
 import ru.itis.hotel.model.RefreshTokenEntity;
 import ru.itis.hotel.model.UserRefreshTokenEntity;
 import ru.itis.hotel.repository.UserRefreshTokenRepository;
@@ -20,7 +20,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class JwtRefreshTokenProviderImpl implements JwtRefreshTokenProvider {
 
-    @Value("${jwt.expiration.access.mills}")
+    @Value("${jwt.expiration.refresh.mills}")
     private Long expirationRefreshInMills;
 
     private final UserRefreshTokenRepository refreshTokenRepository;

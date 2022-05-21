@@ -23,7 +23,12 @@ public interface UserApi {
     @ResponseStatus(HttpStatus.OK)
     UserResponse getUser(@PathVariable("user-id") UUID userId);
 
-    @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/login", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     TokenCoupleResponse login(@RequestBody UserRequest userRequest);
+
+    @PutMapping(value = "/update", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    UserResponse updateUser(@RequestBody CreateUserRequest updateUser);
+
 }

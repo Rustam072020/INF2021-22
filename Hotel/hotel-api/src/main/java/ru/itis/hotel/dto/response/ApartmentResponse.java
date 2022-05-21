@@ -18,6 +18,7 @@ public class ApartmentResponse {
 
     private UUID uuid;
     private Integer apartmentNumber;
-    private ApartmentState state;
+    private Integer cost;
+    private String state;
     private List<FileResponse> files = new ArrayList<>();
 }

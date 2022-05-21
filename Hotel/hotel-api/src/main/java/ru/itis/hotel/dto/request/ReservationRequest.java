@@ -5,16 +5,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
+import java.util.UUID;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class HotelRequest {
+public class ReservationRequest {
 
-    @NotBlank
-    private String title;
+    private UUID apartmentId;
 
-    private String address;
+    private LocalDate checkInDate;
+
+    private LocalDate checkOutDate;
 }

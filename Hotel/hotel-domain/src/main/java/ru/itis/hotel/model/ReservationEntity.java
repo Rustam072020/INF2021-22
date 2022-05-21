@@ -7,11 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import ru.itis.hotel.enums.ReservationState;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -22,9 +20,8 @@ import java.time.LocalDate;
 @Table(name = "reservation")
 public class ReservationEntity extends AbstractEntity {
 
-    @ManyToOne
-    @JoinColumn(name = "client_id")
-    private UserEntity client;
+    @Column(name = "client_id")
+    private UUID client;
 
     @ManyToOne
     @JoinColumn(name = "apartment_id")

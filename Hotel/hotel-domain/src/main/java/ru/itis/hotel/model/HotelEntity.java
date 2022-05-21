@@ -25,7 +25,7 @@ public class HotelEntity extends AbstractEntity {
     )
     private Set<UserEntity> administrators;
 
-    private Double rating;
+    private String address;
 
     @OneToMany(mappedBy = "hotel")
     private Set<FileEntity> files;

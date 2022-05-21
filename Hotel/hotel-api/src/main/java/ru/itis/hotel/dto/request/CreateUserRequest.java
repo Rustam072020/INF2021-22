@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import ru.itis.hotel.enums.Role;
 import ru.itis.hotel.validation.annotation.ValidAge;
 
 import java.time.LocalDate;
@@ -18,4 +19,6 @@ public class CreateUserRequest extends UserRequest {
 
     @ValidAge
     private LocalDate birthDay;
+
+    private Role role;
 }

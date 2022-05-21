@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Service;
 import ru.itis.hotel.dto.response.UserResponse;
-import ru.itis.hotel.exception.AuthenticationHeaderException;
+import ru.itis.hotel.exception.user.AuthenticationHeaderException;
 
 import java.util.Collections;
 import java.util.Optional;

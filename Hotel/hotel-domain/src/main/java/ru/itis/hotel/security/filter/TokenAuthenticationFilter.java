@@ -43,6 +43,7 @@ public class TokenAuthenticationFilter extends RequestHeaderAuthenticationFilter
             if (token.isPresent()) {
                 UserResponse user = jwtTokenService.getUserInfoByToken(token.get());
                 PreAuthenticatedAuthenticationToken authenticationToken = new PreAuthenticatedAuthenticationToken(user, token, Collections.singleton(new SimpleGrantedAuthority("ROLE_"+user.getRole())));
+
                 if (Objects.isNull(SecurityContextHolder.getContext().getAuthentication())) {
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 } else if (!SecurityContextHolder.getContext().getAuthentication().getCredentials().equals(token)) {

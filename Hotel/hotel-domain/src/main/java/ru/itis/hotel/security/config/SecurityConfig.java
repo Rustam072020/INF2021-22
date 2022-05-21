@@ -11,10 +11,9 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
 import org.springframework.security.web.authentication.preauth.RequestHeaderAuthenticationFilter;
-import ru.itis.hotel.security.details.AccountUserDetails;
+import ru.itis.hotel.enums.Role;
 import ru.itis.hotel.security.details.AccountUserDetailsService;
 import ru.itis.hotel.security.filter.TokenAuthenticationFilter;
 import ru.itis.hotel.security.jwt.service.JwtTokenService;
@@ -42,6 +41,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/v3/api-docs/**"
     };
 
+    private static final String[] ADMIN_URL = {
+            "/api/v1/admin/**"
+    };
+
     @Override
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers(IGNORE);
@@ -57,6 +60,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationProvider(authenticationProvider())
                 .authorizeRequests()
                 .antMatchers(PERMIT_ALL).permitAll()
+                .antMatchers("/api/v1/users/logout").hasAnyAuthority()
+                .antMatchers(ADMIN_URL).hasRole(Role.ADMIN.name())
                 .anyRequest().authenticated()
                 .and()
                 .cors()

@@ -32,7 +32,11 @@ public class UserController implements UserApi {
 
     @Override
     public TokenCoupleResponse login(UserRequest userRequest) {
-        System.out.println(userRequest);
         return jwtTokenService.generateTokenCouple(userService.login(userRequest));
+    }
+
+    @Override
+    public UserResponse updateUser(CreateUserRequest updateUser) {
+        return userService.updateUser(updateUser);
     }
 }
